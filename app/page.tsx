@@ -245,6 +245,24 @@ const enumLabels: Record<string, string> = {
 	Others: "อื่น ๆ",
 };
 
+const fieldItemLabels: Record<string, string> = {
+	name: "ชื่อ-นามสกุล",
+	age: "อายุ",
+	occupation: "อาชีพ",
+	level: "ระดับการศึกษา",
+	institution: "สถาบันการศึกษา",
+	major: "สาขาวิชา/คณะ",
+	ed_from: "ปีที่เริ่ม",
+	ed_to: "ปีที่จบ",
+	company: "บริษัท/องค์กร",
+	work_from: "ระยะเวลาเริ่ม",
+	work_to: "ถึง",
+	position: "ตำแหน่งงาน",
+	job_description: "หน้าที่รับผิดชอบ",
+	salary: "เงินเดือน",
+	resignation: "เหตุผลที่ลาออก",
+};
+
 const allFields = groups.flatMap((group) => group.fields);
 const countPairs = [
 	{
@@ -976,10 +994,20 @@ export default function Home() {
 																						#{idx + 1}:
 																					</span>{" "}
 																					{Object.entries(row)
-																						.map(
-																							([k, v]) =>
-																								`${k}: ${enumLabels[v] ?? (v || "—")}`,
-																						)
+																						.filter(([k]) => k !== "_id")
+																						.map(([k, v]) => {
+																							const kLabel =
+																								fieldItemLabels[k] ?? k;
+																							const displayVal =
+																								enumLabels[v] ?? (v || "—");
+																							const unit =
+																								k === "age"
+																									? " ปี"
+																									: k === "salary" && v
+																										? " บาท"
+																										: "";
+																							return `${kLabel}: ${displayVal}${unit}`;
+																						})
 																						.join(" | ")}
 																				</div>
 																			))}

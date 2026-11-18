@@ -1017,38 +1017,59 @@ function FormDetailContent() {
 
 					{/* รายละเอียดพี่น้อง */}
 					<div className="mt-5 border-zinc-100 border-t pt-4 dark:border-zinc-800">
-						<span className="font-semibold text-xs text-zinc-500 uppercase tracking-wider dark:text-zinc-400">
-							รายละเอียดพี่น้อง (JSON)
-						</span>
+						<div className="mb-3 flex items-center justify-between">
+							<span className="font-semibold text-xs text-zinc-500 uppercase tracking-wider dark:text-zinc-400">
+								รายละเอียดพี่น้องแต่ละคน
+							</span>
+							<span className="rounded-full bg-emerald-50 px-2.5 py-0.5 font-semibold text-[11px] text-[#05a44d] dark:bg-emerald-950/50">
+								{siblingMembers.length} คน
+							</span>
+						</div>
+
 						{siblingMembers.length > 0 ? (
-							<div className="mt-3 overflow-x-auto">
+							<div className="overflow-hidden rounded-xl border border-zinc-200/80 bg-white shadow-2xs dark:border-zinc-800 dark:bg-zinc-900">
 								<table className="min-w-full divide-y divide-zinc-200 text-left text-xs dark:divide-zinc-800">
-									<thead className="bg-zinc-50 text-zinc-500 dark:bg-zinc-800/50 dark:text-zinc-400">
+									<thead className="bg-zinc-50/80 text-zinc-600 dark:bg-zinc-800/60 dark:text-zinc-300">
 										<tr>
-											<th className="px-3 py-2 font-semibold">ลำดับ</th>
-											<th className="px-3 py-2 font-semibold">รายละเอียด</th>
+											<th className="w-16 px-4 py-3 text-center font-semibold">
+												ลำดับ
+											</th>
+											<th className="px-4 py-3 font-semibold">ชื่อ-นามสกุล</th>
+											<th className="px-4 py-3 font-semibold">อายุ</th>
+											<th className="px-4 py-3 font-semibold">อาชีพ</th>
 										</tr>
 									</thead>
 									<tbody className="divide-y divide-zinc-100 dark:divide-zinc-800">
-										{siblingMembers.map((member, idx) => (
-											<tr
-												key={
-													typeof member === "object" && member !== null
-														? JSON.stringify(member)
-														: String(member)
-												}
-												className="hover:bg-zinc-50/50 dark:hover:bg-zinc-800/30"
-											>
-												<td className="px-3 py-2 font-mono text-zinc-400">
-													{idx + 1}
-												</td>
-												<td className="px-3 py-2 font-mono text-zinc-800 dark:text-zinc-200">
-													{typeof member === "object"
-														? JSON.stringify(member)
-														: String(member)}
-												</td>
-											</tr>
-										))}
+										{siblingMembers.map((member, idx) => {
+											const isObj =
+												typeof member === "object" && member !== null;
+											const m = isObj
+												? (member as Record<string, unknown>)
+												: null;
+											const itemKey = isObj
+												? ((m?._id as string | undefined) ??
+													JSON.stringify(member))
+												: String(member);
+											return (
+												<tr
+													key={itemKey}
+													className="transition hover:bg-zinc-50/50 dark:hover:bg-zinc-800/40"
+												>
+													<td className="px-4 py-3 text-center font-semibold text-zinc-500 dark:text-zinc-400">
+														#{idx + 1}
+													</td>
+													<td className="px-4 py-3 font-medium text-zinc-900 dark:text-zinc-100">
+														{m ? String(m.name || "—") : String(member)}
+													</td>
+													<td className="px-4 py-3 text-zinc-700 dark:text-zinc-300">
+														{m?.age ? `${String(m.age)} ปี` : "—"}
+													</td>
+													<td className="px-4 py-3 text-zinc-700 dark:text-zinc-300">
+														{m ? String(m.occupation || "—") : "—"}
+													</td>
+												</tr>
+											);
+										})}
 									</tbody>
 								</table>
 							</div>
