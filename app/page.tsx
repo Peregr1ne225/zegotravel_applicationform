@@ -153,8 +153,8 @@ const groups: { title: string; subtitle: string; fields: Field[] }[] = [
 				unit: "คน",
 				wide: true,
 			},
-			{ name: "sibling_male", label: "พี่น้องชาย", type: "number", unit: "คน" },
-			{ name: "sibling_female", label: "พี่น้องหญิง", type: "number", unit: "คน" },
+			{ name: "sibling_male", label: "ชาย", type: "number", unit: "คน" },
+			{ name: "sibling_female", label: "หญิง", type: "number", unit: "คน" },
 			{
 				name: "sibling_member",
 				label: "รายละเอียดพี่น้องแต่ละคน",
@@ -203,8 +203,8 @@ const groups: { title: string; subtitle: string; fields: Field[] }[] = [
 				type: "repeatable",
 				items: [
 					{ name: "company", label: "บริษัท / องค์กร" },
-					{ name: "work_from", label: "ระยะเวลาเริ่ม" },
-					{ name: "work_to", label: "ถึง" },
+					{ name: "work_from", label: "ระยะเวลาเริ่ม เดือน ปี พ.ศ." },
+					{ name: "work_to", label: "ถึง เดือน ปี พ.ศ." },
 					{ name: "position", label: "ตำแหน่งงาน" },
 					{ name: "job_description", label: "ลักษณะงานและความรับผิดชอบ" },
 					{ name: "salary", label: "เงินเดือน (บาท)", type: "number" },

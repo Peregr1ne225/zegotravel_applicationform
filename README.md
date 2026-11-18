@@ -6,13 +6,13 @@ The `/api/form` route uses the Supabase JavaScript client and your `public.forms
 
 The API supports:
 
-| Method | Request | Result |
-| --- | --- | --- |
-| `GET` | `/api/form` | List rows |
-| `GET` | `/api/form?id=<id>` | Get a row |
-| `POST` | `/api/form` with all non-id column values | Insert a row |
-| `PATCH` | `/api/form?id=<id>` with `{"position":"Designer"}` | Update a row |
-| `DELETE` | `/api/form?id=<id>` | Delete a row |
+| Method   | Request                                            | Result       |
+| -------- | -------------------------------------------------- | ------------ |
+| `GET`    | `/api/form`                                        | List rows    |
+| `GET`    | `/api/form?id=<id>`                                | Get a row    |
+| `POST`   | `/api/form` with all non-id column values          | Insert a row |
+| `PATCH`  | `/api/form?id=<id>` with `{"position":"Designer"}` | Update a row |
+| `DELETE` | `/api/form?id=<id>`                                | Delete a row |
 
 Send JSON with `Content-Type: application/json`. Supabase grants and Row Level Security apply to these requests; keep the publishable key in use and configure policies for your intended access. Do not use a service-role key in client-visible variables.
 

@@ -6,6 +6,7 @@ const FORM_COLUMNS = new Set([
 	"nickname",
 	"position",
 	"expected_salary",
+	"day_birth",
 	"moo",
 	"road",
 	"district",

@@ -58,6 +58,33 @@ interface FormRecord {
 	[key: string]: unknown;
 }
 
+const educationFieldLabels: Record<string, string> = {
+	level: "ระดับการศึกษา",
+	institution: "ชื่อสถาบันการศึกษา",
+	major: "สาขาวิชา / คณะ",
+	ed_from: "ปีที่เริ่ม (พ.ศ.)",
+	ed_to: "ปีที่จบ (พ.ศ.)",
+};
+
+const jobFieldLabels: Record<string, string> = {
+	company: "บริษัท / องค์กร",
+	position: "ตำแหน่งงาน",
+	work_from: "ระยะเวลาเริ่ม",
+	work_to: "ถึง",
+	salary: "เงินเดือน (บาท)",
+	job_description: "ลักษณะงานและความรับผิดชอบ",
+	resignation: "เหตุผลที่ลาออก",
+};
+
+const educationLevelLabels: Record<string, string> = {
+	"High School": "มัธยมศึกษา",
+	Vocational: "อาชีวศึกษา (ปวช.)",
+	Diploma: "อนุปริญญา / ประกาศนียบัตรวิชาชีพชั้นสูง (ปวส.)",
+	"Bachelor Degree": "ปริญญาตรี",
+	PostGrauate: "สูงกว่าปริญญาตรี",
+	Others: "อื่น ๆ",
+};
+
 function FormDetailContent() {
 	const params = useParams();
 	const id = params?.id as string;
@@ -1034,136 +1061,213 @@ function FormDetailContent() {
 				</div>
 
 				{/* ======================================================== */}
-				{/* กลุ่มที่ 7: ประวัติการศึกษาและการทำงาน                   */}
+				{/* กลุ่มที่ 7: ประวัติการศึกษา                                */}
 				{/* ======================================================== */}
 				<div className="rounded-2xl border border-zinc-200 bg-white p-6 shadow-sm dark:border-zinc-800 dark:bg-zinc-900 sm:p-7">
-					<div className="mb-5 flex items-center gap-2.5 border-zinc-100 border-b pb-3 dark:border-zinc-800">
-						<div className="flex h-8 w-8 items-center justify-center rounded-lg bg-emerald-50 text-[#05a44d] dark:bg-emerald-950/50">
-							<svg
-								className="h-4 w-4"
-								aria-hidden="true"
-								fill="none"
-								stroke="currentColor"
-								viewBox="0 0 24 24"
-							>
-								<path
-									strokeLinecap="round"
-									strokeLinejoin="round"
-									strokeWidth={2}
-									d="M12 14l9-5-9-5-9 5 9 5zm0 0l6.16-3.422a12.083 12.083 0 01.665 6.479A11.952 11.952 0 0012 20.055a11.952 11.952 0 00-6.824-2.998 12.078 12.078 0 01.665-6.479L12 14zm-4 6v-7.5l4-2.222"
-								/>
-							</svg>
+					<div className="mb-5 flex items-center justify-between border-zinc-100 border-b pb-3 dark:border-zinc-800">
+						<div className="flex items-center gap-2.5">
+							<div className="flex h-8 w-8 items-center justify-center rounded-lg bg-emerald-50 text-[#05a44d] dark:bg-emerald-950/50">
+								<svg
+									className="h-4 w-4"
+									aria-hidden="true"
+									fill="none"
+									stroke="currentColor"
+									viewBox="0 0 24 24"
+								>
+									<path
+										strokeLinecap="round"
+										strokeLinejoin="round"
+										strokeWidth={2}
+										d="M12 14l9-5-9-5-9 5 9 5zm0 0l6.16-3.422a12.083 12.083 0 01.665 6.479A11.952 11.952 0 0012 20.055a11.952 11.952 0 00-6.824-2.998 12.078 12.078 0 01.665-6.479L12 14zm-4 6v-7.5l4-2.222"
+									/>
+								</svg>
+							</div>
+							<h2 className="font-semibold text-lg text-zinc-900 dark:text-zinc-100">
+								ประวัติการศึกษา
+							</h2>
 						</div>
-						<h2 className="font-semibold text-lg text-zinc-900 dark:text-zinc-100">
-							ประวัติการศึกษาและการทำงาน
-						</h2>
+
+						<span className="rounded-full bg-emerald-50 px-3 py-1 font-semibold text-xs text-[#05a44d] dark:bg-emerald-950/50">
+							{educationRecords.length} รายการ
+						</span>
 					</div>
 
-					<div className="space-y-6">
-						{/* การศึกษา */}
-						<div>
-							<div className="flex items-center gap-2">
-								<span className="font-semibold text-sm text-zinc-800 dark:text-zinc-200">
-									ประวัติการศึกษา
-								</span>
-								<span className="rounded-full bg-zinc-100 px-2 py-0.5 font-semibold text-[11px] text-zinc-600 dark:bg-zinc-800 dark:text-zinc-300">
-									{educationRecords.length}
-								</span>
-							</div>
-
-							{educationRecords.length > 0 ? (
-								<div className="mt-3 space-y-3">
-									{educationRecords.map((item) => (
-										<div
-											key={
-												typeof item === "object" && item !== null
-													? JSON.stringify(item)
-													: String(item)
-											}
-											className="rounded-xl border border-zinc-100 bg-zinc-50/60 p-4 dark:border-zinc-800 dark:bg-zinc-800/40"
-										>
-											{typeof item === "object" && item !== null ? (
-												<div className="grid grid-cols-1 gap-2 sm:grid-cols-3">
-													{Object.entries(item as Record<string, unknown>).map(
-														([k, v]) => (
-															<div key={k}>
-																<span className="font-semibold text-[10px] text-zinc-400 uppercase">
-																	{k}
-																</span>
-																<p className="font-medium text-xs text-zinc-800 dark:text-zinc-200">
-																	{String(v)}
-																</p>
-															</div>
-														),
+					{educationRecords.length > 0 ? (
+						<div className="space-y-3">
+							{educationRecords.map((item, index) => {
+								const isObj = typeof item === "object" && item !== null;
+								const recordObj = isObj
+									? (item as Record<string, unknown>)
+									: null;
+								const levelVal = recordObj ? String(recordObj.level ?? "") : "";
+								const displayLevel = educationLevelLabels[levelVal] ?? levelVal;
+								const itemKey = isObj
+									? ((recordObj?._id as string | undefined) ??
+										JSON.stringify(item))
+									: String(item);
+								return (
+									<div
+										key={itemKey}
+										className="rounded-xl border border-zinc-100 bg-zinc-50/60 p-4 dark:border-zinc-800 dark:bg-zinc-800/40"
+									>
+										{recordObj ? (
+											<div>
+												<div className="mb-2 flex items-center justify-between border-zinc-200/50 border-b pb-2 dark:border-zinc-700/50">
+													<div className="flex items-center gap-2">
+														<span className="flex h-5 w-5 items-center justify-center rounded-full bg-[#05a44d] font-bold text-[10px] text-white">
+															{index + 1}
+														</span>
+														<span className="font-bold text-sm text-zinc-900 dark:text-zinc-100">
+															{displayLevel || `รายการที่ #${index + 1}`}
+														</span>
+													</div>
+													{(recordObj.ed_from || recordObj.ed_to) && (
+														<span className="font-medium text-xs text-zinc-500 dark:text-zinc-400">
+															พ.ศ. {String(recordObj.ed_from || "—")} -{" "}
+															{String(recordObj.ed_to || "—")}
+														</span>
 													)}
 												</div>
-											) : (
-												<p className="font-mono text-xs text-zinc-700 dark:text-zinc-300">
-													{String(item)}
-												</p>
-											)}
-										</div>
-									))}
-								</div>
-							) : (
-								<p className="mt-2 text-xs text-zinc-400 italic">
-									ไม่มีข้อมูลประวัติการศึกษา
-								</p>
-							)}
-						</div>
-
-						{/* ประวัติการทำงาน */}
-						<div className="border-zinc-100 border-t pt-5 dark:border-zinc-800">
-							<div className="flex items-center gap-2">
-								<span className="font-semibold text-sm text-zinc-800 dark:text-zinc-200">
-									ประวัติการทำงาน
-								</span>
-								<span className="rounded-full bg-zinc-100 px-2 py-0.5 font-semibold text-[11px] text-zinc-600 dark:bg-zinc-800 dark:text-zinc-300">
-									{jobRecords.length}
-								</span>
-							</div>
-
-							{jobRecords.length > 0 ? (
-								<div className="mt-3 space-y-3">
-									{jobRecords.map((item) => (
-										<div
-											key={
-												typeof item === "object" && item !== null
-													? JSON.stringify(item)
-													: String(item)
-											}
-											className="rounded-xl border border-zinc-100 bg-zinc-50/60 p-4 dark:border-zinc-800 dark:bg-zinc-800/40"
-										>
-											{typeof item === "object" && item !== null ? (
-												<div className="grid grid-cols-1 gap-2 sm:grid-cols-3">
-													{Object.entries(item as Record<string, unknown>).map(
-														([k, v]) => (
+												<div className="grid grid-cols-1 gap-2 sm:grid-cols-2 lg:grid-cols-3">
+													{Object.entries(recordObj)
+														.filter(([k]) => k !== "_id")
+														.map(([k, v]) => (
 															<div key={k}>
 																<span className="font-semibold text-[10px] text-zinc-400 uppercase">
-																	{k}
+																	{educationFieldLabels[k] ?? k}
 																</span>
 																<p className="font-medium text-xs text-zinc-800 dark:text-zinc-200">
-																	{String(v)}
+																	{k === "level"
+																		? displayLevel
+																		: String(v || "—")}
 																</p>
 															</div>
-														),
-													)}
+														))}
 												</div>
-											) : (
-												<p className="font-mono text-xs text-zinc-700 dark:text-zinc-300">
-													{String(item)}
-												</p>
-											)}
-										</div>
-									))}
-								</div>
-							) : (
-								<p className="mt-2 text-xs text-zinc-400 italic">
-									ไม่มีข้อมูลประวัติการทำงาน
-								</p>
-							)}
+											</div>
+										) : (
+											<p className="font-mono text-xs text-zinc-700 dark:text-zinc-300">
+												{String(item)}
+											</p>
+										)}
+									</div>
+								);
+							})}
 						</div>
+					) : (
+						<p className="text-xs text-zinc-400 italic">ไม่มีข้อมูลประวัติการศึกษา</p>
+					)}
+				</div>
+
+				{/* ======================================================== */}
+				{/* กลุ่มที่ 8: ประวัติการทำงาน                                */}
+				{/* ======================================================== */}
+				<div className="rounded-2xl border border-zinc-200 bg-white p-6 shadow-sm dark:border-zinc-800 dark:bg-zinc-900 sm:p-7">
+					<div className="mb-5 flex items-center justify-between border-zinc-100 border-b pb-3 dark:border-zinc-800">
+						<div className="flex items-center gap-2.5">
+							<div className="flex h-8 w-8 items-center justify-center rounded-lg bg-emerald-50 text-[#05a44d] dark:bg-emerald-950/50">
+								<svg
+									className="h-4 w-4"
+									aria-hidden="true"
+									fill="none"
+									stroke="currentColor"
+									viewBox="0 0 24 24"
+								>
+									<path
+										strokeLinecap="round"
+										strokeLinejoin="round"
+										strokeWidth={2}
+										d="M21 13.255A23.931 23.931 0 0112 15c-3.183 0-6.22-.62-9-1.745M16 6V4a2 2 0 00-2-2h-4a2 2 0 00-2 2v2m4 6h.01M5 20h14a2 2 0 002-2V8a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z"
+									/>
+								</svg>
+							</div>
+							<h2 className="font-semibold text-lg text-zinc-900 dark:text-zinc-100">
+								ประวัติการทำงาน
+							</h2>
+						</div>
+
+						<span className="rounded-full bg-emerald-50 px-3 py-1 font-semibold text-xs text-[#05a44d] dark:bg-emerald-950/50">
+							{jobRecords.length} รายการ
+						</span>
 					</div>
+
+					{jobRecords.length > 0 ? (
+						<div className="space-y-3">
+							{jobRecords.map((item, index) => {
+								const isObj = typeof item === "object" && item !== null;
+								const recordObj = isObj
+									? (item as Record<string, unknown>)
+									: null;
+								const itemKey = isObj
+									? ((recordObj?._id as string | undefined) ??
+										JSON.stringify(item))
+									: String(item);
+								return (
+									<div
+										key={itemKey}
+										className="rounded-xl border border-zinc-100 bg-zinc-50/60 p-4 dark:border-zinc-800 dark:bg-zinc-800/40"
+									>
+										{recordObj ? (
+											<div>
+												<div className="mb-2 flex items-center justify-between border-zinc-200/50 border-b pb-2 dark:border-zinc-700/50">
+													<div className="flex items-center gap-2">
+														<span className="flex h-5 w-5 items-center justify-center rounded-full bg-[#05a44d] font-bold text-[10px] text-white">
+															{index + 1}
+														</span>
+														<span className="font-bold text-sm text-zinc-900 dark:text-zinc-100">
+															{String(
+																recordObj.company || `ที่ทำงานที่ #${index + 1}`,
+															)}
+														</span>
+														{Boolean(recordObj.position) && (
+															<span className="text-xs text-zinc-500 dark:text-zinc-400">
+																({String(recordObj.position)})
+															</span>
+														)}
+													</div>
+													{(recordObj.work_from || recordObj.work_to) && (
+														<span className="font-medium text-xs text-zinc-500 dark:text-zinc-400">
+															{String(recordObj.work_from || "—")} -{" "}
+															{String(recordObj.work_to || "—")}
+														</span>
+													)}
+												</div>
+												<div className="grid grid-cols-1 gap-2 sm:grid-cols-2 lg:grid-cols-3">
+													{Object.entries(recordObj)
+														.filter(([k]) => k !== "_id")
+														.map(([k, v]) => (
+															<div
+																key={k}
+																className={
+																	k === "job_description" || k === "resignation"
+																		? "sm:col-span-2 lg:col-span-3"
+																		: ""
+																}
+															>
+																<span className="font-semibold text-[10px] text-zinc-400 uppercase">
+																	{jobFieldLabels[k] ?? k}
+																</span>
+																<p className="font-medium text-xs text-zinc-800 dark:text-zinc-200">
+																	{k === "salary" && v
+																		? `${Number(v).toLocaleString()} บาท`
+																		: String(v || "—")}
+																</p>
+															</div>
+														))}
+												</div>
+											</div>
+										) : (
+											<p className="font-mono text-xs text-zinc-700 dark:text-zinc-300">
+												{String(item)}
+											</p>
+										)}
+									</div>
+								);
+							})}
+						</div>
+					) : (
+						<p className="text-xs text-zinc-400 italic">ไม่มีข้อมูลประวัติการทำงาน</p>
+					)}
 				</div>
 
 				{/* Bottom Navigation (hidden on print) */}
