@@ -1142,7 +1142,7 @@ function FormDetailContent() {
 															{displayLevel || `รายการที่ #${index + 1}`}
 														</span>
 													</div>
-													{(recordObj.ed_from || recordObj.ed_to) && (
+													{Boolean(recordObj.ed_from || recordObj.ed_to) && (
 														<span className="font-medium text-xs text-zinc-500 dark:text-zinc-400">
 															พ.ศ. {String(recordObj.ed_from || "—")} -{" "}
 															{String(recordObj.ed_to || "—")}
@@ -1246,7 +1246,7 @@ function FormDetailContent() {
 															</span>
 														)}
 													</div>
-													{(recordObj.work_from || recordObj.work_to) && (
+														{Boolean(recordObj.work_from || recordObj.work_to) && (
 														<span className="font-medium text-xs text-zinc-500 dark:text-zinc-400">
 															{String(recordObj.work_from || "—")} -{" "}
 															{String(recordObj.work_to || "—")}

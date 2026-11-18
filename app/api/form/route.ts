@@ -257,14 +257,11 @@ export async function PATCH(request: Request) {
 			[pair.total, pair.male, pair.female].some((column) => column in body),
 		);
 		if (changedPairs.length) {
-			const columns = [
-				...new Set(
-					changedPairs.flatMap((pair) => [pair.total, pair.male, pair.female]),
-				),
-			].join(",");
 			const { data: existing, error: readError } = await getSupabase()
 				.from(TABLE)
-				.select(columns)
+				.select(
+					"sibling, sibling_male, sibling_female, children, children_male, children_female",
+				)
 				.eq("id", id)
 				.single();
 			if (readError)
