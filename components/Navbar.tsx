@@ -3,24 +3,24 @@
 import Image from "next/image";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
-import { useState } from "react";
+import { Suspense, useState } from "react";
 
-export default function Navbar() {
+function NavbarContent() {
 	const pathname = usePathname();
 	const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
 
 	const navItems = [
 		{
-			label: "Application Form",
+			label: "แบบฟอร์มสมัครงาน",
 			href: "/",
-			description: "Fill & submit application",
+			description: "กรอกและส่งใบสมัคร",
 			icon: (
 				<svg
 					className="h-4 w-4"
+					aria-hidden="true"
 					fill="none"
 					stroke="currentColor"
 					viewBox="0 0 24 24"
-					aria-hidden="true"
 				>
 					<path
 						strokeLinecap="round"
@@ -32,16 +32,16 @@ export default function Navbar() {
 			),
 		},
 		{
-			label: "View Submissions",
-			href: "/forms",
-			description: "Browse submitted records",
+			label: "ดูใบสมัครทั้งหมด",
+			href: "/form",
+			description: "รายการข้อมูลผู้สมัคร",
 			icon: (
 				<svg
 					className="h-4 w-4"
+					aria-hidden="true"
 					fill="none"
 					stroke="currentColor"
 					viewBox="0 0 24 24"
-					aria-hidden="true"
 				>
 					<path
 						strokeLinecap="round"
@@ -55,7 +55,7 @@ export default function Navbar() {
 	];
 
 	return (
-		<header className="sticky top-0 z-50 w-full bg-gradient-to-r from-[#04843d] via-[#05a44d] to-[#06b856] text-white shadow-[0_4px_25px_-5px_rgba(5,164,77,0.35)] backdrop-blur-md">
+		<header className="no-print sticky top-0 z-50 w-full bg-gradient-to-r from-[#04843d] via-[#05a44d] to-[#06b856] text-white shadow-[0_4px_25px_-5px_rgba(5,164,77,0.35)] backdrop-blur-md">
 			{/* Top subtle highlight border line */}
 			<div className="h-[1px] w-full bg-white/25" />
 
@@ -68,7 +68,7 @@ export default function Navbar() {
 					<div className="relative flex h-9 w-auto items-center justify-center rounded-lg bg-white/10 px-2 py-1 shadow-inner backdrop-blur-sm transition group-hover:bg-white/15">
 						<Image
 							src="/images/zego-logo-w.png"
-							alt="Zego Logo"
+							alt="โลโก้ Zego"
 							width={110}
 							height={30}
 							className="h-6 w-auto object-contain drop-shadow-sm"
@@ -81,10 +81,10 @@ export default function Navbar() {
 					<div className="flex flex-col">
 						<div className="flex items-center gap-1.5">
 							<span className="font-bold text-base tracking-tight text-white drop-shadow-xs sm:text-lg">
-								Application Form
+								ระบบรับสมัครงาน
 							</span>
 							<span className="rounded-full bg-white/20 px-1.5 py-0.5 font-medium text-[10px] tracking-wide text-white uppercase backdrop-blur-xs">
-								Portal
+								พอร์ทัล
 							</span>
 						</div>
 					</div>
@@ -93,7 +93,10 @@ export default function Navbar() {
 				{/* Desktop Segmented Navigation */}
 				<nav className="hidden items-center gap-1 rounded-full border border-white/20 bg-black/15 p-1 shadow-inner backdrop-blur-md sm:flex">
 					{navItems.map((item) => {
-						const isActive = pathname === item.href;
+						const isActive =
+							item.href === "/"
+								? pathname === "/"
+								: pathname?.startsWith(item.href);
 						return (
 							<Link
 								key={item.href}
@@ -118,11 +121,12 @@ export default function Navbar() {
 					type="button"
 					onClick={() => setIsMobileMenuOpen(!isMobileMenuOpen)}
 					className="inline-flex h-10 w-10 items-center justify-center rounded-xl border border-white/25 bg-white/10 p-2 text-white shadow-sm transition hover:bg-white/20 active:scale-95 sm:hidden"
-					aria-label="Toggle navigation menu"
+					aria-label="เปิด/ปิดเมนูการนำทาง"
 					aria-expanded={isMobileMenuOpen}
 				>
 					<svg
 						className="h-5 w-5"
+						aria-hidden="true"
 						fill="none"
 						stroke="currentColor"
 						viewBox="0 0 24 24"
@@ -151,7 +155,10 @@ export default function Navbar() {
 				<div className="border-t border-white/15 bg-[#04843d]/95 px-4 py-4 shadow-xl backdrop-blur-xl sm:hidden">
 					<div className="flex flex-col gap-2">
 						{navItems.map((item) => {
-							const isActive = pathname === item.href;
+							const isActive =
+								item.href === "/"
+									? pathname === "/"
+									: pathname?.startsWith(item.href);
 							return (
 								<Link
 									key={item.href}
@@ -189,5 +196,17 @@ export default function Navbar() {
 				</div>
 			)}
 		</header>
+	);
+}
+
+export default function Navbar() {
+	return (
+		<Suspense
+			fallback={
+				<header className="no-print sticky top-0 z-50 h-16 w-full bg-gradient-to-r from-[#04843d] via-[#05a44d] to-[#06b856] shadow-[0_4px_25px_-5px_rgba(5,164,77,0.35)]" />
+			}
+		>
+			<NavbarContent />
+		</Suspense>
 	);
 }
